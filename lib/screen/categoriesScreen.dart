@@ -25,10 +25,11 @@ class CategoriesScreenState extends State<CategoriesScreen> {
         return AlertDialog(
           actions: <Widget>[
             FlatButton(
-                onPressed: () {
+                onPressed: () async {
                   _category.name = _categoryName.text;
                   _category.description = _categoryDescription.text;
-                  _categoryService.saveCategory(_category);
+                  var result = await _categoryService.saveCategory(_category);
+                  print(result);
                 },
                 child: Text("Save")),
             FlatButton(onPressed: () {}, child: Text("Cancel")),
