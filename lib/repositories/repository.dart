@@ -20,4 +20,9 @@ class Repository {
     var conn = await database;
     return await conn.insert(table, data);
   }
+
+  getAll(table) async {
+    var conn = await database;
+    return await conn.query(table);
+  }
 }

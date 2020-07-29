@@ -17,6 +17,32 @@ class CategoriesScreenState extends State<CategoriesScreen> {
   var _category = Category();
   var _categoryService = CategoryService();
 
+  List<Widget> _categoryList = List<Widget>();
+  @override
+  void initState() {
+    super.initState();
+
+    _getAllCategoryService();
+  }
+
+  _getAllCategoryService() async {
+    var categories = await _categoryService.getCategoryServices();
+    categories.forEach((category) {
+      print(category['description']);
+      setState(() {
+        _categoryList.add(Card(
+          child: ListTile(
+            leading: Icon(
+              Icons.edit,
+              color: Colors.red,
+            ),
+            title: Text(category['name']),
+          ),
+        ));
+      });
+    });
+  }
+
   _showFormInDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -30,6 +56,11 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                   _category.description = _categoryDescription.text;
                   var result = await _categoryService.saveCategory(_category);
                   print(result);
+                  _getAllCategoryService();
+
+                  print(_category.name);
+                  Navigator.of(context).pop();
+                  // print(_category.description);
                 },
                 child: Text("Save")),
             FlatButton(onPressed: () {}, child: Text("Cancel")),
@@ -78,8 +109,12 @@ class CategoriesScreenState extends State<CategoriesScreen> {
           },
         ),
       ),
-      body: Center(
-        child: Text('Welcome to categories screen!'),
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: _categoryList,
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
