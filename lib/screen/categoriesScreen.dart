@@ -26,10 +26,12 @@ class CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   _getAllCategoryService() async {
+    _categoryList.clear();
     var categories = await _categoryService.getCategoryServices();
-    categories.forEach((category) {
-      print(category['description']);
-      setState(() {
+    setState(() {
+      categories.forEach((category) {
+        print(category['description']);
+
         _categoryList.add(Card(
           child: ListTile(
             leading: Icon(
@@ -55,9 +57,10 @@ class CategoriesScreenState extends State<CategoriesScreen> {
                   _category.name = _categoryName.text;
                   _category.description = _categoryDescription.text;
                   var result = await _categoryService.saveCategory(_category);
-                  print(result);
+
                   _getAllCategoryService();
 
+                  print(result);
                   print(_category.name);
                   Navigator.of(context).pop();
                   // print(_category.description);
